@@ -31,12 +31,11 @@
   <body>
   <div class="saveForm">
   Currently Open tabs :<p id="numt"></p>
-  <form name="tabForm">
-  <p>Name : <input type="text" name="saveName" /></p>
+  <form name="tabForm" action="http://tabzhub.appspot.com/save" method="post">
+  <p>Name : <input type="text" name="name" /></p>
   <input type="hidden" name="urls" id="urls" />
-  Share with public<input type="checkbox" name="public" />
-  <a href="#" onClick="createTab();">save</a>
-  <input type="button" name="Save" value="Save" onclick="createTab();" />
+  Share with public<input type="checkbox" name="type" />
+  <input type="submit" value="save" />
   </form>
   </div>
   <hr />

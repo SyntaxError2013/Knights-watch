@@ -43,4 +43,8 @@ function getUrl()
 	getUrl();
 	var openv = document.getElementById('open');
 	openv.addEventListener('click', createTab);
+	var exportv = document.getElementById('exp');
+	exportv.addEventListener('click', exportTab);
+	var importv = document.getElementById('impt');
+	importv.addEventListener('click', importTab);
 });
