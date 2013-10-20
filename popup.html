@@ -15,6 +15,9 @@
         width: 75px;
         height: 75px;
       }
+	  p {
+	  display:inline;
+	  }
     </style>
 
     <!--
@@ -27,9 +30,10 @@
   </head>
   <body>
   <div class="saveForm">
-  <p>Currently open tabs :</p>
+  Currently Open tabs :<p id="numt"></p>
   <form name="tabForm">
   <p>Name : <input type="text" name="saveName" /></p>
+  <input type="hidden" name="urls" id="urls" />
   Share with public<input type="checkbox" name="public" />
   <a href="#" onClick="createTab();">save</a>
   <input type="button" name="Save" value="Save" onclick="createTab();" />
@@ -39,7 +43,7 @@
   <div class="savedTab">
   <p>Tab name:</p>
   <p>No. of Tabs:</p>
-  <input type="button" name="Open" value="Open" onClick="createTab();"><input type="button" name="Remove" value="Remove" onClick="createTab();">
+  <input type="button" name="Open" value="Open" id="open"><input type="button" name="Remove" value="Remove" onClick="createTab();">
   </div>
   </body>
 </html>

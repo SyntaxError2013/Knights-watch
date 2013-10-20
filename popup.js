@@ -3,39 +3,44 @@ numTabs=0;
 
 function setNumTabs(inp)
 {
-	numTabs = inp;
+	numz = inp;
 	
 }
-function createTab(varUrl)
+function createTab()
 {
-	chrome.windows.create({url: varUrl});
+	var urls =document.getElementById("urls").value;
+	var urlstr = urls.split(',');
+	alert(urlstr[1]);
+	chrome.windows.create({url: urlstr});
 }
 function getNum() 
 {
-	numTabs = chrome.tabs.getAllInWindow(null, function (tabs) {
-			return tabs.length;
+	chrome.tabs.getAllInWindow(null, function (tabs) {
+			numTabs=tabs.length;
+			document.getElementById("numt").innerHTML=tabs.length;
 			});
-			alert(numTabs);
-			return numTabs;
+						
 }
 
 function getUrl()
 {
-	var len=this.getNum();
-		var urls;
-		alert(len);
+		this.getNum();
+		
+		
+		chrome.tabs.query({'currentWindow': true}, function (tabs) {
+		var tempurl="";
+		var len=document.getElementById("numt").innerHTML;
 		for(var i=0;i<len;i++)
 		{
-			if(i<=0)
-			{
-				urls="";
-			}
-		chrome.tabs.query({'currentWindow': true}, function (tabs) {
-		urls = urls + "," + tabs[i].url;
-		});
+		tempurl = tabs[i].url+","+tempurl;
 		}
+		tempurl = tempurl.substring(0,tempurl.length - 1);
+		document.getElementById("urls").value=tempurl;
+		});
 }
 
  document.addEventListener('DOMContentLoaded', function () {
- getNum();
+	getUrl();
+	var openv = document.getElementById('open');
+	openv.addEventListener('click', createTab);
 });
