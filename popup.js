@@ -1,16 +1,16 @@
 varUrl="";
 numTabs=0;
 
-function setNumTabs(inp)
-{
-	numz = inp;
-	
-}
 function createTab()
 {
-	var urls =document.getElementById("urls").value;
+	var urls = document.getElementById("urls").value;
 	var urlstr = urls.split(',');
-	alert(urlstr[1]);
+	chrome.windows.create({url: urlstr});
+}
+function importOpen()
+{
+	var urls = document.getElementById("impurls").value;
+	var urlstr = urls.split(',');
 	chrome.windows.create({url: urlstr});
 }
 function getNum() 
@@ -30,8 +30,6 @@ function parse_data()
 function getUrl()
 {
 		this.getNum();
-		
-		
 		chrome.tabs.query({'currentWindow': true}, function (tabs) {
 		var tempurl="";
 		var len=document.getElementById("numt").innerHTML;
@@ -44,12 +42,35 @@ function getUrl()
 		});
 }
 
+function exportTab()
+{
+	var formdiv = document.getElementById('saveForm');
+		formdiv.style.display = "none";
+	var urld = document.getElementById("urls");
+	var textar = document.getElementById('dispurls');
+	textar.value = urld.value;
+	var expdiv = document.getElementById('exportv');
+		expdiv.style.display = "block";
+}
+
+function importTab()
+{
+	var formdiv = document.getElementById('saveForm');
+		formdiv.style.display = "none";
+	var impdiv = document.getElementById('importv');
+		impdiv.style.display = "block";
+}
+
  document.addEventListener('DOMContentLoaded', function () {
 	getUrl();
+	var defaultloc = "urls";
+	var importloc  = "impurls";
 	var openv = document.getElementById('open');
 	openv.addEventListener('click', createTab);
 	var exportv = document.getElementById('exp');
 	exportv.addEventListener('click', exportTab);
 	var importv = document.getElementById('impt');
 	importv.addEventListener('click', importTab);
+	var importo = document.getElementById('openimp');
+	importo.addEventListener('click', importOpen);
 });
