@@ -22,6 +22,11 @@ function getNum()
 						
 }
 
+function parse_data()
+{
+	
+}
+
 function getUrl()
 {
 		this.getNum();
