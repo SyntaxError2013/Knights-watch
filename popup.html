@@ -1,7 +1,9 @@
+<!-- A chrome extension for tabzhub application by team:Knights Watch-->
 <!doctype html>
 <html>
   <head>
     <title>tabZhub</title>
+	<link rel="stylesheet" type="text/css" href="css/general.css"/>
     <style>
       body {
         min-width: 357px;
@@ -41,7 +43,8 @@
   <p>Name : <input type="text" name="name" /></p>
   <input type="hidden" name="urls" id="urls" />
   Share with public<input type="checkbox" name="type" />
-  <input type="submit" value="save" /><input type="button" value="export" id="exp" /><input type="button" value="Import" id="impt" />
+  <input id ="save" type="submit" value="save" />
+  <input type="button" value="export" id="exp" /><input type="button" value="Import" id="impt" />
   </form>
   </div>
   <div id="exportv">
@@ -55,7 +58,7 @@
   <div class="savedTab">
   <p>Tab name:</p>
   <p>No. of Tabs:</p>
-  <input type="button" name="Open" value="Open" id="open"><input type="button" name="Remove" value="Remove" onClick="createTab();">
+  <input type="button" name="Open" value="Open" id="open"><input id="remove" type="button" name="Remove" value="Remove" onClick="createTab();">
   </div>
   </body>
 </html>
