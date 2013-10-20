@@ -7,11 +7,23 @@ function createTab()
 	var urlstr = urls.split(',');
 	chrome.windows.create({url: urlstr});
 }
+function createTabinco()
+{
+	var urls = document.getElementById("urls").value;
+	var urlstr = urls.split(',');
+	chrome.windows.create({url: urlstr, incognito: true});
+}
 function importOpen()
 {
 	var urls = document.getElementById("impurls").value;
 	var urlstr = urls.split(',');
 	chrome.windows.create({url: urlstr});
+}
+function importOpeninco()
+{
+	var urls = document.getElementById("impurls").value;
+	var urlstr = urls.split(',');
+	chrome.windows.create({url: urlstr, incognito: true});
 }
 function getNum() 
 {
@@ -67,10 +79,14 @@ function importTab()
 	var importloc  = "impurls";
 	var openv = document.getElementById('open');
 	openv.addEventListener('click', createTab);
+	var openvinco = document.getElementById('openinco');
+	openvinco.addEventListener('click', createTabinco);
 	var exportv = document.getElementById('exp');
 	exportv.addEventListener('click', exportTab);
 	var importv = document.getElementById('impt');
 	importv.addEventListener('click', importTab);
 	var importo = document.getElementById('openimp');
 	importo.addEventListener('click', importOpen);
+		var importoinco = document.getElementById('openimpinco');
+	importoinco.addEventListener('click', importOpeninco);
 });
