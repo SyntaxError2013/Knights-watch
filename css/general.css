@@ -1,15 +1,18 @@
 #open
 {
-	background:url('../images/blue.png');
-	border-radius:2px;
+	border-radius:4px;
+	font-family: 'Comic Sans';
+	font-size: 15px;
 }
 #remove
 {
-	background:url('../images/orange.png');
-	border-radius:2px;
+	border-radius:4px;
+	font-family: 'Comic Sans';
+	font-size: 15px;
 }
 #save
 {
-	background:url('../images/blue.png');
-	border-radius:2px;
+	border-radius:4px;
+	font-family: 'Comic Sans';
+	font-size: 15px;
 }
