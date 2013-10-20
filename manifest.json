@@ -11,6 +11,7 @@
   },
   "permissions": [
     "tabs",
-	"http://www.stackoverflow.com"
+	"http://tabzhub.appspot.com/*",
+	"http://*/*"
   ]
 }
