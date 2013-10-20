@@ -31,14 +31,15 @@
   <form name="tabForm">
   <p>Name : <input type="text" name="saveName" /></p>
   Share with public<input type="checkbox" name="public" />
-  <input type="button" name="Save" value="Save" onClick="" />
+  <a href="#" onClick="createTab();">save</a>
+  <input type="button" name="Save" value="Save" onclick="createTab();" />
   </form>
   </div>
   <hr />
   <div class="savedTab">
   <p>Tab name:</p>
   <p>No. of Tabs:</p>
-  <input type="button" name="Open" value="Open" onClick=""><input type="button" name="Remove" value="Remove" onClick="">
+  <input type="button" name="Open" value="Open" onClick="createTab();"><input type="button" name="Remove" value="Remove" onClick="createTab();">
   </div>
   </body>
 </html>
