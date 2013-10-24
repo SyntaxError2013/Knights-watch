@@ -15,7 +15,8 @@
       "matches": ["//ajax.googleapis.com/*"],
       "js": [
               "jquery.min.js", 
-              "jquery-ui.min.js"
+              "jquery-ui.min.js",
+              "popup.js"
             ]
     }
   ],
