@@ -12,7 +12,7 @@
   
   "content_scripts": [
     {
-      "matches": ["//ajax.googleapis.com/*"],
+      "matches": ["http://*/*", "https://*/*"],
       "js": [
               "jquery.min.js", 
               "jquery-ui.min.js",
