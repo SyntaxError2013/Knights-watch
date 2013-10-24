@@ -129,3 +129,11 @@ function importTab()
 	var importoinco = document.getElementById('openimpinco');
 	importoinco.addEventListener('click', importOpeninco);
 });
+
+$(document).ready(function(){
+  var list = ["Apple","Astronuat","Python","Perl","Php","Asp","Java"];
+  $("#search").autocomplete({
+    source: list
+  });
+});
+

@@ -2,6 +2,7 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="utf-8" />
     <title>tabZhub</title>
 	<link rel="stylesheet" type="text/css" href="css/general.css"/>
     <style>
@@ -35,6 +36,9 @@
       - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
      -->
     <script src="popup.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
   </head>
   <body>
   <div id="saveForm">
@@ -59,6 +63,10 @@
   <p>Tab name:</p>
   <p>No. of Tabs:</p>
   <input type="button" name="Open" value="Open" id="open"><input type="button" name="Open" value="Incognito" id="openinco">
+  </div>
+  <div class="ui-widget">
+    <label for="search">Search: </label>
+    <input id="search" />
   </div>
   </body>
 </html>
