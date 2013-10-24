@@ -13,6 +13,6 @@
   "permissions": [
     "tabs",
 	  "http://tabzhub.appspot.com/*",
-    "http://www.google.com/*"
+    "*://*/*"
   ]
 }
