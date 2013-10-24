@@ -69,6 +69,12 @@ function fetchData()
 	xmlhttp.send();
 }
 
+/*
+function search()
+{
+
+}
+*/
 function getUrl()
 {
 		this.getNum();
