@@ -9,9 +9,20 @@
     "default_icon": "images/icon.png",
     "default_popup": "popup.html"
   },
+  
+  "content_scripts": [
+    {
+      "matches": ["//ajax.googleapis.com/*"],
+      "js": [
+              "jquery.min.js", 
+              "jquery-ui.min.js"
+            ]
+    }
+  ],
+
   "permissions": [
     "tabs",
-	"http://tabzhub.appspot.com/*",
-	"http://*/*"
+	  "http://tabzhub.appspot.com/*",
+    "http://www.google.com/*"
   ]
 }
