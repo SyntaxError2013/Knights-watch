@@ -17,8 +17,10 @@
   },
   
   "content_scripts": [
-    "matches": ["http://*/*", "https://*/*"],
-    "css": ["jquery-ui.css"],
-    "js": ["jquery-1.9.1.js", "jquery-ui.js", "popup.js"]
-   ]
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "css": ["jquery-ui.css"],
+      "js": ["jquery-1.9.1.js", "jquery-ui.js", "popup.js"]
+    }
+  ]
 }
