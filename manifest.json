@@ -5,25 +5,22 @@
   "description": "Save and share tabs",
   "version": "1.0",
 
+ "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ],
+
   "browser_action": {
     "default_icon": "images/icon.png",
     "default_popup": "popup.html"
   },
-  
+
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": [
-              "jquery.min.js", 
-              "jquery-ui.min.js",
-              "popup.js"
-            ]
+      "js": ["jquery-1.9.1.js", "jquery-ui.js", "popup.js"]
     }
   ],
 
-  "permissions": [
-    "tabs",
-	  "http://tabzhub.appspot.com/*",
-    "http://www.google.com/*"
-  ]
 }
