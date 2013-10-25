@@ -7,8 +7,7 @@
 
  "permissions": [
     "tabs",
-    "http://*/*",
-    "https://*/*"
+    "*://*/*"
   ],
 
   "browser_action": {
@@ -18,7 +17,7 @@
 
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["*://*/*"],
       "js": ["jquery-1.9.1.js", "jquery-ui.js", "popup.js"],
       "run_at": "document_start"
     }
