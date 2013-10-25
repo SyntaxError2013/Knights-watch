@@ -9,7 +9,7 @@
     "tabs",
 	  "http://tabzhub.appspot.com/*",
     "*://*/*"
-  ]
+  ],
 
   "browser_action": {
     "default_icon": "images/icon.png",
