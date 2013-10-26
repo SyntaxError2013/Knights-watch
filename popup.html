@@ -3,7 +3,8 @@
 <html>
   <head>
     <title>tabZhub</title>
-	  <link rel="stylesheet" type="text/css" href="css/general.css"/>
+	  <link rel="stylesheet" type="text/css" href="css/general.css">
+    <link rel="stylesheet" type="text/css" href="jquery-ui.css">
     <style>
       body {
         min-width: 357px;
@@ -26,6 +27,13 @@
 	  #importv{
 	  display:none;
 	  }
+
+    .ui-autocomplete-category {
+        font-weight: bold;
+        padding: .2em .4em;
+        margin: .8em 0 .2em;
+        line-height: 1.5;
+    }
     </style>
 
     <!--
@@ -34,20 +42,21 @@
       -
       - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
      -->
+    <script src="jquery-1.9.1.js"></script>
+    <script src="jquery-ui.js"></script>
     <script src="popup.js"></script>
-    <!--link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /-->
-    <!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script-->
-    <!--script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script-->
+    <script src="pretty.js"></script>
   </head>
   <body>
   <div id="saveForm">
   Currently Open tabs :<p id="numt"></p>
+  <br>
   <form name="tabForm" action="http://tabzhub.appspot.com/save" method="post">
-  <p>Name : <input type="text" name="name" /></p>
-  <input type="hidden" name="urls" id="urls" />
-  Share with public<input type="checkbox" name="type" />
-  <input id ="save" type="submit" value="Save" />
-  <input type="button" value="Export" id="exp" /><input type="button" value="Import" id="impt" />
+    Session : <input type="text" name="name" required>
+    <input type="hidden" name="urls" id="urls" />
+    Public <input type="checkbox" name="type" />
+    <input id ="save" type="submit" value="Save" />
+    <input type="button" value="Export" id="exp" /><input type="button" value="Import" id="impt" />
   </form>
   </div>
   <div id="exportv">
@@ -58,15 +67,20 @@
   <input type="button" value="Open" id="openimp" /><input type="button" value="Open incognito" id="openimpinco" />
   </div>
   <hr />
-  <div id="savedTab">
-  <p>Tab name:</p>
-  <p>No. of Tabs:</p>
-  <input type="button" name="Open" value="Open" id="open"><input type="button" name="Open" value="Incognito" id="openinco">
-  </div>
+
+
   <div class="ui-widget">
     <label for="search">Search: </label>
     <input id="search" />
   </div>
-  </body>
+  <br>
+  <div id="accordion"></div>
+
+  <!--div id="savedTab">
+  <p>Tab name:</p>
+  <p>No. of Tabs:</p>
+  <input type="button" name="Open" value="Open" id="open"><input type="button" name="Open" value="Incognito" id="openinco">
+  </div-->
+</body>
 </html>
 
