@@ -130,11 +130,11 @@ function importTab()
 	importoinco.addEventListener('click', importOpeninco);
 });
 
-/*
+
 $(document).ready(function(){
   var list = ["Apple","Astronuat","Python","Perl","Php","Asp","Java"];
   $("#search").autocomplete({
     source: list
   });
 });
-*/
+
