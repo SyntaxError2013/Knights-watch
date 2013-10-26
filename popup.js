@@ -98,6 +98,17 @@ function getHostname(href) {
   return l.hostname;
 }
 
+function putEllipsis(str, size)
+{
+  if(str.length > 22)
+  {
+    var s = str.substr(0, size);
+    s = s + "...";
+    return s;
+  }
+  else
+  return str;
+}
 function fetchData()
 {
 	var xmlhttp;
@@ -112,7 +123,7 @@ function fetchData()
 		for(var i=1;i<=Object.keys(data).length;i++)
     {
       var urls_arr = data[i]['urls'].split(',');
-      formi = formi + "<h3>" + data[i]['name']+" ("+ urls_arr.length  +") <span style='float:right; font-size:10px;'>"+ prettyDate(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+i+"' value='"+data[i]['urls']+"' /><br /><p> <input type='button' name='Openserv' value='Open' id='openserv' /><input type='button' name='Openincoserv' value='Open Incognito' id='openincoserv' /><br>";
+      formi = formi + "<h3><span>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span style='float:right; font-size:10px;'>"+ prettyDate(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+i+"' value='"+data[i]['urls']+"' /><br /><p> <input type='button' name='Openserv' value='Open' id='openserv' /><input type='button' name='Openincoserv' value='Open Incognito' id='openincoserv' /><br>";
       for(j=0;j<urls_arr.length;j++)
       {
        	 formi = formi + "<div class='tab'><a class='favicons' href='"+urls_arr[j]+"'>"+ getHostname(urls_arr[j])  +"</a></div><br>";
@@ -142,7 +153,7 @@ function getUrl()
 		var len=document.getElementById("numt").innerHTML;
 		for(var i=0;i<len;i++)
 		{
-		tempurl = tabs[i].url+","+tempurl;
+		  tempurl = tabs[i].url+","+tempurl;
 		}
 		tempurl = tempurl.substring(0,tempurl.length - 1);
 		document.getElementById("urls").value=tempurl;
@@ -181,8 +192,14 @@ function importTab()
     heightStyle: "content",
     collapsible: true,
     active: false,
-    icons: icons
-  }); 
+    icons: icons,
+    activate: function(event, ui){
+      alert("yo!!");
+      //alert(ui.newHeader.find('a').attr('id'));
+      //console.log(ui.newHeader);
+    }
+  });
+
 
   $(".favicons").each(function(){
     var href = $(this).attr('href');
