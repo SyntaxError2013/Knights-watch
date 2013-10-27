@@ -194,7 +194,7 @@ function importTab()
     active: false,
     icons: icons,
     activate: function(event, ui){
-      alert("yo!!");
+     console.log("Session header clicked in accordion.");
       //alert(ui.newHeader.find('a').attr('id'));
       //console.log(ui.newHeader);
     }
