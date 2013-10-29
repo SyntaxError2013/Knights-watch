@@ -1,13 +1,24 @@
 body
 {
-background:url('../images/triangular.png');
 font-family:"Comic Sans MS", cursive, sans-serif;
+margin: 0px;
+padding: 0px;
 
+}
+#top_container {
+  background:url('../images/bgrnd/mbpanel.jpg');
+  padding: 10px;
+  padding-bottom: 20px;
+  
+}
+#bottom_container {
+  background-color: white;
+  padding: 5px;
+  padding-top: 2px;
 }
 #saveForm
 {
 	font-size: 15px;
-	
 }
 #open
 {

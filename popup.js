@@ -8,13 +8,13 @@ var _urls = new Object();
 
 $.widget( "custom.catcomplete", $.ui.autocomplete, {
   _renderMenu: function( ul, items ) {
-  var that = this,
-  currentCategory = "";
+  var that = this;
+  //currentCategory = "";
   $.each( items, function( index, item ) {
-  if ( item.category != currentCategory ) {
+  //if ( item.category != currentCategory ) {
   ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
   currentCategory = item.category;
- }
+ //}
  that._renderItemData( ul, item );
  });
 }
@@ -113,7 +113,7 @@ function fetchData()
 {
 	var xmlhttp;
 	xmlhttp=new XMLHttpRequest();
-	xmlhttp.open("GET","http://tabzhub.appspot.com/fetch",false);
+	xmlhttp.open("GET","http://tabzhub.appspot.com/fetch", true);
 	xmlhttp.onreadystatechange=function()
 	{
 		if (xmlhttp.readyState==4)
@@ -123,7 +123,7 @@ function fetchData()
 		for(var i=1;i<=Object.keys(data).length;i++)
     {
       var urls_arr = data[i]['urls'].split(',');
-      formi = formi + "<h3><span>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span style='float:right; font-size:10px;'>"+ prettyDate(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+i+"' value='"+data[i]['urls']+"' /><br /><p> <input type='button' name='Openserv' value='Open' id='openserv' /><input type='button' name='Openincoserv' value='Open Incognito' id='openincoserv' /><br>";
+      formi = formi + "<h3><span>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span style='float:right; font-size:10px;margin-top: 5px;'>"+ prettyDate(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+i+"' value='"+data[i]['urls']+"' /><br /><p> <input type='button' name='Openserv' value='Open' id='openserv' /><input type='button' name='Openincoserv' value='Open Incognito' id='openincoserv' /><br>";
       for(j=0;j<urls_arr.length;j++)
       {
        	 formi = formi + "<div class='tab'><a class='favicons' href='"+urls_arr[j]+"'>"+ getHostname(urls_arr[j])  +"</a></div><br>";
@@ -138,6 +138,37 @@ function fetchData()
 		}
 			var svtb = document.getElementById("accordion");
 			svtb.innerHTML = formi;
+
+     /* ACCORDION INITIALIZATION */
+       
+      var icons = {   // Need to repair this linking with jquery-ui icons.
+        header: "ui-icon-circle-arrow-e",
+        activeHeader: "ui-icon-circle-arrow-s"
+      };
+
+     $("#accordion").accordion({ // Should be here after those 2 functions.
+      heightStyle: "content",
+      collapsible: true,
+      active: false,
+      icons: icons,
+      activate: function(event, ui){
+       console.log("Session header clicked in accordion.");
+      }
+     });
+
+     $(".favicons").each(function(){
+      var href = $(this).attr('href');
+      $(this).css({
+        background: "url(http://www.google.com/s2/u/0/favicons?domain=" + getHostname(href) + 
+                ") left center no-repeat",
+                "padding-left": "20px"
+      });
+    });
+
+    $("#bottom_container").css({
+      background: "url('../images/bgrnd/mbpanel.jpg')"
+    });
+
 	  }
   }
 
@@ -183,11 +214,10 @@ function importTab()
 	getUrl();
 	fetchData();
 
-  var icons = {   // Need to repair this linking with jquery-ui icons.
-    header: "ui-icon-circle-arrow-e",
-    activeHeader: "ui-icon-circle-arrow-s"
-  };
+  
 
+/*****************************************************************************************/
+  /*
   $("#accordion").accordion({ // Should be here after those 2 functions.
     heightStyle: "content",
     collapsible: true,
@@ -199,8 +229,10 @@ function importTab()
       //console.log(ui.newHeader);
     }
   });
+  */
 
 
+  /*
   $(".favicons").each(function(){
     var href = $(this).attr('href');
     $(this).css({
@@ -209,13 +241,18 @@ function importTab()
               "padding-left": "20px"
     });
   });
+  */
+
+/*******************************************************************************************/
+
 
 	/*var openv = document.getElementById('open');
 	openv.addEventListener('click', createTab);
 	var openvinco = document.getElementById('openinco');
 	openvinco.addEventListener('click', createTabinco);*/
 	
-  
+
+/*
   var openvserv = document.getElementById('openserv');
 	openvserv.addEventListener('click', createTabserv);
 	var openvincoserv = document.getElementById('openincoserv');
@@ -228,7 +265,8 @@ function importTab()
 	importo.addEventListener('click', importOpen);
 	var importoinco = document.getElementById('openimpinco');
 	importoinco.addEventListener('click', importOpeninco);
-  
+*/
+
 });
 
 

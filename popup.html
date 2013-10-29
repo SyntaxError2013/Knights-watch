@@ -3,6 +3,7 @@
 <html>
   <head>
     <title>tabZhub</title>
+    <meta charset="utf-8">
 	  <link rel="stylesheet" type="text/css" href="css/general.css">
     <link rel="stylesheet" type="text/css" href="jquery-ui.css">
     <style>
@@ -10,23 +11,33 @@
         min-width: 357px;
         overflow-x: hidden;
       }
-
+       /*
       img {
         margin: 5px;
         border: 2px solid black;
         vertical-align: middle;
         width: 75px;
         height: 75px;
+      }*/
+
+      img#loader_img {
+        border: none;
+        vertical-align: middle;
+        margin-left: 80px;
       }
-	  p {
-	  display:inline;
-	  }
-	  #exportv{
-	  display:none;
-	  }
-	  #importv{
-	  display:none;
-	  }
+      p {
+      display:inline;
+      }
+      #exportv{
+      display:none;
+      }
+      #importv{
+      display:none;
+      }
+      #footer {
+        text-align: center;
+        margin: 5px;
+      }
 
     .ui-autocomplete-category {
         font-weight: bold;
@@ -48,39 +59,47 @@
     <script src="pretty.js"></script>
   </head>
   <body>
-  <div id="saveForm">
-  Currently Open tabs :<p id="numt"></p>
-  <br>
-  <form name="tabForm" action="http://tabzhub.appspot.com/save" method="post">
-    Session : <input type="text" name="name" required>
-    <input type="hidden" name="urls" id="urls" />
-    Public <input type="checkbox" name="type" />
-    <input id ="save" type="submit" value="Save" />
-    <input type="button" value="Export" id="exp" /><input type="button" value="Import" id="impt" />
-  </form>
+  <div id="top_container">
+    <div id="saveForm">
+      Currently Open tabs :<p id="numt"></p>
+      <br>
+      <form name="tabForm" action="http://tabzhub.appspot.com/save" method="post">
+        Session : <input type="text" name="name" required>
+        <input type="hidden" name="urls" id="urls" />
+        Public <input type="checkbox" name="type" />
+        <input id ="save" type="submit" value="Save" />
+        <input type="button" value="Export" id="exp" /><input type="button" value="Import" id="impt" />
+      </form>
+    </div>
+    <div id="exportv">
+      <textarea id="dispurls" rows="10" cols="40"></textarea>
+    </div>
+    <div id="importv">
+      <textarea id="impurls" rows="10" cols="40"></textarea>
+      <input type="button" value="Open" id="openimp" /><input type="button" value="Open incognito" id="openimpinco" />
+    </div>
+    <hr />
+    <div class="ui-widget search_box">
+      <label for="search">Search: </label>
+      <input id="search" />
+    </div>
   </div>
-  <div id="exportv">
-  <textarea id="dispurls" rows="10" cols="40"></textarea>
-  </div>
-  <div id="importv">
-  <textarea id="impurls" rows="10" cols="40"></textarea>
-  <input type="button" value="Open" id="openimp" /><input type="button" value="Open incognito" id="openimpinco" />
-  </div>
-  <hr />
 
+  <div id="bottom_container">
+    <div id="accordion">
+      <img id="loader_img" src="images/loader.gif" alt="Fetching data..."> 
+    </div>
+    <div id="footer">
+      <a href="http://tabzhub.appspot.com/index">Visit Website</a> <br>
+      <p>© 2013 team tabZhub</p>
+    </div>
 
-  <div class="ui-widget">
-    <label for="search">Search: </label>
-    <input id="search" />
+    <!--div id="savedTab">
+    <p>Tab name:</p>
+    <p>No. of Tabs:</p>
+    <input type="button" name="Open" value="Open" id="open"><input type="button" name="Open" value="Incognito" id="openinco">
+    </div-->
   </div>
-  <br>
-  <div id="accordion"></div>
-
-  <!--div id="savedTab">
-  <p>Tab name:</p>
-  <p>No. of Tabs:</p>
-  <input type="button" name="Open" value="Open" id="open"><input type="button" name="Open" value="Incognito" id="openinco">
-  </div-->
 </body>
 </html>
 
