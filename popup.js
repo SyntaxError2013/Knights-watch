@@ -47,15 +47,17 @@ function createTabinco()
 	var urlstr = urls.split(',');
 	chrome.windows.create({url: urlstr, incognito: true});
 }
-function createTabserv()
+function createTabserv(i)
 {
-	var urls = document.getElementById("tab1").value;
+	var j = i.charAt(i.length-1);
+	var urls = document.getElementById("tab"+j).value;
 	var urlstr = urls.split(',');
 	chrome.windows.create({url: urlstr});
 }
-function createTabincoserv()
+function createTabincoserv(i)
 {
-	var urls = document.getElementById("tab1").value;
+	var j = i.charAt(i.length-1);
+	var urls = document.getElementById("tab"+j).value;
 	var urlstr = urls.split(',');
 	chrome.windows.create({url: urlstr, incognito: true});
 }
@@ -112,6 +114,7 @@ function putEllipsis(str, size)
 function fetchData()
 {
 	var xmlhttp;
+	var numSaves;
 	xmlhttp=new XMLHttpRequest();
 	xmlhttp.open("GET","http://tabzhub.appspot.com/fetch", true);
 	xmlhttp.onreadystatechange=function()
@@ -120,10 +123,11 @@ function fetchData()
     {
 		var formi="";
 		var data = JSON.parse(xmlhttp.responseText);
+		numSaves = Object.keys(data).length;
 		for(var i=1;i<=Object.keys(data).length;i++)
     {
       var urls_arr = data[i]['urls'].split(',');
-      formi = formi + "<h3><span>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span style='float:right; font-size:10px;margin-top: 5px;'>"+ prettyDate(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+i+"' value='"+data[i]['urls']+"' /><br /><p> <input type='button' name='Openserv' value='Open' id='openserv' /><input type='button' name='Openincoserv' value='Open Incognito' id='openincoserv' /><br>";
+      formi = formi + "<h3><span>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span style='float:right; font-size:10px;margin-top: 5px;'>"+ prettyDate(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+i+"' value='"+data[i]['urls']+"' /><br /><p> <input type='button' name='Openserv' value='Open' id='openserv"+i+"' /><input type='button' name='Openincoserv' value='Open Incognito' id='openincoserv"+i+"' /><br>";
       for(j=0;j<urls_arr.length;j++)
       {
        	 formi = formi + "<div class='tab'><a class='favicons' href='"+urls_arr[j]+"'>"+ getHostname(urls_arr[j])  +"</a></div><br>";
@@ -170,6 +174,16 @@ function fetchData()
     });
 
 	  }
+	  for(var i=1;i<=numSaves;i++)
+	  {
+		var openvserv = new Array();
+		var openvincoserv = new Array();
+	    openvserv[i] = document.getElementById('openserv'+i);
+		openvserv[i].addEventListener('click', function(){ createTabserv(this.id);});
+		openvincoserv[i] = document.getElementById('openincoserv'+i);
+		openvincoserv[i].addEventListener('click', function(){createTabincoserv(this.id);});
+	}
+	  
   }
 
 	xmlhttp.send();
