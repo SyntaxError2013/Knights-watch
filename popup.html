@@ -1,112 +1,33 @@
-<!-- A chrome extension for tabzhub application by team:Knights Watch-->
-<!doctype html>
+<!-- A chrome extension for 'tabzhub' application by team:Knights Watch-->
+<!Doctype html>
 <html lang="en">
   <head>
     <title>tabZhub</title>
     <meta charset="utf-8">
 	  <link rel="stylesheet" type="text/css" href="css/general.css">
     <link rel="stylesheet" type="text/css" href="themes/base/jquery-ui.css">
-    <style>
-      body {
-        min-width: 357px;
-        overflow-x: hidden;
-      }
-       /*
-      img {
-        margin: 5px;
-        border: 2px solid black;
-        vertical-align: middle;
-        width: 75px;
-        height: 75px;
-      }*/
-
-      img#loader_img {
-        border: none;
-        vertical-align: middle;
-        margin-left: 80px;
-      }
-      p {
-        display:inline;
-      }
-      #exportv {
-        display:none;
-      }
-      #importv {
-        display:none;
-      }
-      div.tab {
-      	padding-left: 30px;
-      }
-      div.session_menu {
-        height: 40px;
-        margin: 0 0 0 12;
-        float: right;
-      }
-      .ui-accordion .ui-accordion-content {
-        padding: 0em 1.2em;
-      }
-      .ui-widget .ui-widget {
-        font-size: .6em;
-      }
-      #footer {
-        text-align: center;
-        margin: 5px;
-      }
-      .ui-autocomplete-category {
-        font-weight: bold;
-        padding: .2em .2em;
-        margin: .4em 0 .2em;
-        line-height: 1;
-      }
-      .ui-menu { 
-      	position: absolute; 
-      	width: 100px; 
-      }
-      
-      ::-webkit-scrollbar              { /* 1 */ }
-      ::-webkit-scrollbar-button       { /* 2 */ }
-      ::-webkit-scrollbar-track        { /* 3 */ }
-      ::-webkit-scrollbar-track-piece  { /* 4 */ }
-      ::-webkit-scrollbar-thumb        { /* 5 */ }
-      ::-webkit-scrollbar-corner       { /* 6 */ }
-      ::-webkit-resizer                { /* 7 */ }
-      
-     ::-webkit-scrollbar-track-piece:start {
-      /* Select the top half (or left half) or scrollbar track individually */
-     }
-     ::-webkit-scrollbar-thumb:window-inactive {
-     /* Select the thumb when the browser window isn't in focus */
-     }
-     ::-webkit-scrollbar-button:horizontal:decrement:hover {
-    
-     /* Select the down or left scroll button when it's being hovered by the mouse */
-     }
-
-     ::-webkit-scrollbar {
-         width: 10px;
-     }
-          
-     ::-webkit-scrollbar-track {
-      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-        border-radius: 5px;
-     }
-                   
-     ::-webkit-scrollbar-thumb {
-      border-radius: 5px;
-      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-    }
-    ::-webkit-scrollbar-thumb:window-inactive {
-      background: rgba(255,0,0,0.4); 
-    }
-
+    <style type="text/css">
+    	.ui-accordion .ui-accordion-content {
+				padding: 0em 1.2em;
+			}
+			.ui-widget .ui-widget {
+				font-size: .6em;
+			}
+			#footer {
+				text-align: center;
+				margin: 5px;
+			}
+			.ui-autocomplete-category {
+				font-weight: bold;
+				padding: .2em .2em;
+				margin: .4em 0 .2em;
+				line-height: 1;
+			}
+			.ui-menu { 
+				position: absolute; 
+				width: 100px; 
+			}
     </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: http://developer.chrome.com/extensions/contentSecurityPolicy.html
-     -->
     <script src="jquery-1.9.1.js"></script>
     <script src="jquery-ui.js"></script>
     <script src="popup.js"></script>
@@ -149,12 +70,6 @@
       <a href="http://tabzhub.appspot.com/index" target="_blank">Visit Website</a> <br>
       <p>© 2013 team tabZhub</p>
     </div>
-
-    <!--div id="savedTab">
-    <p>Tab name:</p>
-    <p>No. of Tabs:</p>
-    <input type="button" name="Open" value="Open" id="open"><input type="button" name="Open" value="Incognito" id="openinco">
-    </div-->
   </div>
 </body>
 </html>

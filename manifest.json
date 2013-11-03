@@ -6,20 +6,13 @@
 
  "permissions": [
     "tabs",
-    "*://*/*"
+    "*://tabzhub.appspot.com/*"
   ],
 
   "browser_action": {
     "default_icon": "images/icon.png",
     "default_popup": "popup.html",
+    "default_name": "tabZhub",
     "icons": ["icon.png"]
   },
-
-  "content_scripts": [
-    {
-      "matches": ["*://*/*"],
-      "js": ["popup.js"],
-      "run_at": "document_start"
-    }
-  ]
 }
