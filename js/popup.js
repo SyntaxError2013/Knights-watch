@@ -2,7 +2,7 @@ varUrl="";
 numTabs=0;
 var sessions = new Array();
 var _urls = new Object();
-
+var _datetime = new Object();
 
 /* SEARCH MODULE STARTS */
 /*
@@ -125,6 +125,13 @@ function putEllipsis(str, size)
   return str;
 }
 
+function getTimeAgo(s)
+{
+ var corrected_time = moment(s, "YYYY-MM-DD HH:mm:ssZ");
+ var timeAgo = corrected_time.fromNow();
+ return timeAgo;
+}
+
 function fetchData()
 {
 	var xmlhttp;
@@ -141,10 +148,11 @@ function fetchData()
       for(var i=1;i<=Object.keys(data).length;i++)
       {
         var urls_arr = data[i]['urls'].split(',');
-        formi = formi + "<h3 title='"+ data[i]['name'] +"'><span>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span style='float:right; font-size:10px;margin-top: 5px;'>"+ prettyDate(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+i+"' value='"+ data[i]['urls'] +"' /><br /><p><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+i+"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> ";
+                
+        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><p><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+i+"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br>";
         for(j=0;j<urls_arr.length;j++)
         {
-           formi = formi + "<div class='tab'><a class='favicons' href='"+urls_arr[j]+"' target='_blank'>"+ getHostname(urls_arr[j]) +"</a></div><br>";
+           formi = formi + "<div class='tab'><div class='indicator'></div><div class='link_box'><a class='favicons' href='"+urls_arr[j]+"' target='_blank' style='float:left;'>"+ getHostname(urls_arr[j]) +"</a></div><div class='edit_box'><span class='ui-icon ui-icon-pencil'></span></div><div class='delete_box'><span class='ui-icon ui-icon-close'></span></div></div>";
         }
         formi = formi + "</p></div>";
 
@@ -153,6 +161,7 @@ function fetchData()
         //tmp['category'] = getType(data[i]['type']);
         sessions.push(data[i]['name']);
         _urls[data[i]['name']] = data[i]['urls'];
+        _datetime[i] = data[i]['created_on']; 
       }
         var svtb = document.getElementById("accordion");
         svtb.innerHTML = formi;
@@ -181,6 +190,40 @@ function fetchData()
                   ") left center no-repeat",
                   "padding-left": "20px"
         });
+       });
+
+       $(this).children(".link_box").css({'background-color':'white'});
+       $(".indicator").each(function(){
+         $(this).css({'background-color':'white'});
+       });
+       $(".edit_box").hide();
+       $(".delete_box").hide();
+       $("div.tab")
+        .mouseover(function(){
+          $(this).children(".indicator").css({'background-color':'orange'});
+          $(this).children(".link_box").css({'background-color':'#f7f7f7'});
+          $(this).children(".edit_box").css({'background-color':'#f7f7f7'});
+          $(this).children(".delete_box").css({'background-color':'#f7f7f7'});
+          $(this).children(".edit_box").show();
+          $(this).children(".delete_box").show();
+        })
+        .mouseout(function(){
+          $(".indicator").each(function(){
+            $(this).css({'background-color':'white'});
+          });
+          $(this).children(".link_box").css({'background-color':'white'}); 
+          $(this).children(".edit_box").css({'background-color':'white'});
+          $(this).children(".delete_box").css({'background-color':'white'});
+          $(".edit_box").hide();
+          $(".delete_box").hide();
+        });
+
+      $("div.edit_box").on("click", function(){
+       alert("Tab edit called...");  
+      });
+
+      $("div.delete_box").on("click", function(){
+       alert("Tab delete called...");  
       });
 
       $("#bottom_container").css({
@@ -223,7 +266,6 @@ function fetchData()
           $(this).button( "option", "icons", { primary: "ui-icon-unlocked"} );
           $(this).button( "option", "label", "Public" );
         }
-
         else if($(this).hasClass("public_type_btn"))
         {
           console.log("Inside public!!!");
@@ -296,6 +338,20 @@ function fetchData()
   }
 	xmlhttp.send();
 }
+
+/* Function to update 'session.created_on.timeAgo' corresponding to every session header */
+function updateTimeAgo()
+{
+    $("span.sess_timeAgo").each(function(){
+      var tmp = $(this).attr('id');
+      tmp = tmp.replace("sess_timeAgo_", "");
+      var corrected_time = getTimeAgo(_datetime[tmp]);
+      $(this).text(corrected_time);
+    }); 
+}
+
+setInterval(updateTimeAgo, 1000);
+/* Ends */
 
 function getUrl()
 {

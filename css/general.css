@@ -73,8 +73,46 @@ p {
   display:none;
 }
 div.tab {
-	padding-left: 30px;
+	height: 25px;
+	padding: 5px;
+	padding-left: 20px;
+	margin: 5px;
 }
+div.indicator {
+	width: 3px;
+	height: 100%;
+	background-color: white;
+	float: left;
+}
+div.link_box {
+	width: 200px;
+	height: 100%;
+	padding-left: 10px;
+	float: left;
+	overflow: hidden;
+}
+a.favicons {
+	width: 200px;
+	height: 100%;
+	float:left;
+}
+div.edit_box {
+	width: 10px;
+	float: left;
+	margin: 0px;
+	padding: 5px;
+	padding-left: 5px;
+	cursor: pointer;
+}
+div.delete_box {
+	width: 10px;
+	float: left;
+	margin: 0px;
+	padding: 5px;
+	padding-right: 10px;
+	cursor: pointer;
+}
+
 div.session_menu {
   height: 40px;
   margin: 0 0 0 12;
