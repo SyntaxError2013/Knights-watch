@@ -5,24 +5,36 @@ var _urls = new Object();
 
 
 /* SEARCH MODULE STARTS */
-
+/*
 $.widget( "custom.catcomplete", $.ui.autocomplete, {
   _renderMenu: function( ul, items ) {
   var that = this;
-  //currentCategory = "";
+  currentCategory = "";
+  
   $.each( items, function( index, item ) {
-  //if ( item.category != currentCategory ) {
-  ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-  currentCategory = item.category;
- //}
- that._renderItemData( ul, item );
- });
+    if ( item.category == "public" || item.category == "private") {
+      var arr = ul.children('li.ui-autocomplete-category');
+      var sess_types = new Array();
+      $.each(arr, function(_index, _item){
+        sess_types.push( $(_item).text() );
+      });
+      if(jQuery.inArray())
+
+      if((ul.children('li.ui-autocomplete-category').innerText != item.category ))
+      {
+        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+        currentCategory = item.category;
+      }
+    }
+    that._renderItemData( ul, item );
+  });
 }
 
 });
+*/
 
 $(document).ready(function(){
-  $("#search").catcomplete({
+  $("#search").autocomplete({
     delay: 0,
     source: sessions,
     select: function(event, ui){
@@ -87,17 +99,18 @@ function getNum()
 						
 }
 
-function getType(bool_type)
-{
-  if(bool_type == false)
-  { return "Private";}
-  else{return "Public";}
-}
-
 function getHostname(href) {
   var l = document.createElement("a");
   l.href = href;
   return l.hostname;
+}
+
+function getType(n)
+{
+  if(n == 1)
+    return "public";
+  else
+    return "private";
 }
 
 function putEllipsis(str, size)
@@ -111,6 +124,7 @@ function putEllipsis(str, size)
   else
   return str;
 }
+
 function fetchData()
 {
 	var xmlhttp;
@@ -121,74 +135,167 @@ function fetchData()
 	{
 		if (xmlhttp.readyState==4)
     {
-		var formi="";
-		var data = JSON.parse(xmlhttp.responseText);
-		numSaves = Object.keys(data).length;
-		for(var i=1;i<=Object.keys(data).length;i++)
-    {
-      var urls_arr = data[i]['urls'].split(',');
-      formi = formi + "<h3><span>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span style='float:right; font-size:10px;margin-top: 5px;'>"+ prettyDate(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+i+"' value='"+data[i]['urls']+"' /><br /><p> <input type='button' name='Openserv' value='Open' id='openserv"+i+"' /><input type='button' name='Openincoserv' value='Open Incognito' id='openincoserv"+i+"' /><br>";
-      for(j=0;j<urls_arr.length;j++)
+      var formi="";
+      var data = JSON.parse(xmlhttp.responseText);
+      numSaves = Object.keys(data).length;
+      for(var i=1;i<=Object.keys(data).length;i++)
       {
-       	 formi = formi + "<div class='tab'><a class='favicons' href='"+urls_arr[j]+"'>"+ getHostname(urls_arr[j])  +"</a></div><br>";
+        var urls_arr = data[i]['urls'].split(',');
+        formi = formi + "<h3 title='"+ data[i]['name'] +"'><span>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span style='float:right; font-size:10px;margin-top: 5px;'>"+ prettyDate(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+i+"' value='"+ data[i]['urls'] +"' /><br /><p><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+i+"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> ";
+        for(j=0;j<urls_arr.length;j++)
+        {
+           formi = formi + "<div class='tab'><a class='favicons' href='"+urls_arr[j]+"' target='_blank'>"+ getHostname(urls_arr[j]) +"</a></div><br>";
+        }
+        formi = formi + "</p></div>";
+
+        //var tmp = new Object();
+        //tmp['label'] = data[i]['name'];
+        //tmp['category'] = getType(data[i]['type']);
+        sessions.push(data[i]['name']);
+        _urls[data[i]['name']] = data[i]['urls'];
       }
-      formi = formi + "</p></div>";
+        var svtb = document.getElementById("accordion");
+        svtb.innerHTML = formi;
 
-      var tmp = new Object();
-      tmp['label'] = data[i]['name'];
-      tmp['category'] = getType(data[i]['type']);
-      sessions.push(tmp);  /* GLOBAL ARRAY - FEEDING DATA TO FUEL SESSION SEARCH */
-      _urls[data[i]['name']] = data[i]['urls'];
-		}
-			var svtb = document.getElementById("accordion");
-			svtb.innerHTML = formi;
+       /* ACCORDION INITIALIZATION */
+         
+        var icons = {  
+          header: "ui-icon-circle-arrow-e",
+          activeHeader: "ui-icon-circle-arrow-s"
+        };
 
-     /* ACCORDION INITIALIZATION */
-       
-      var icons = {   // Need to repair this linking with jquery-ui icons.
-        header: "ui-icon-circle-arrow-e",
-        activeHeader: "ui-icon-circle-arrow-s"
-      };
+       $("#accordion").accordion({ // Should be here after those 2 functions.
+        heightStyle: "content",
+        collapsible: true,
+        active: false,
+        icons: icons,
+        activate: function(event, ui){
+         console.log("Session header clicked in accordion.");
+        }
+       });
 
-     $("#accordion").accordion({ // Should be here after those 2 functions.
-      heightStyle: "content",
-      collapsible: true,
-      active: false,
-      icons: icons,
-      activate: function(event, ui){
-       console.log("Session header clicked in accordion.");
-      }
-     });
-
-     $(".favicons").each(function(){
-      var href = $(this).attr('href');
-      $(this).css({
-        background: "url(http://www.google.com/s2/u/0/favicons?domain=" + getHostname(href) + 
-                ") left center no-repeat",
-                "padding-left": "20px"
+       $(".favicons").each(function(){
+        var href = $(this).attr('href');
+        $(this).css({
+          background: "url(http://www.google.com/s2/u/0/favicons?domain=" + getHostname(href) + 
+                  ") left center no-repeat",
+                  "padding-left": "20px"
+        });
       });
-    });
 
-    $("#bottom_container").css({
-      background: "url('../images/bgrnd/mbpanel.jpg')"
-    });
+      $("#bottom_container").css({
+        background: "url('../images/bgrnd/mbpanel.jpg')"
+      });
 
-	  }
-	  for(var i=1;i<=numSaves;i++)
-	  {
-		var openvserv = new Array();
-		var openvincoserv = new Array();
-	    openvserv[i] = document.getElementById('openserv'+i);
-		openvserv[i].addEventListener('click', function(){ createTabserv(this.id);});
-		openvincoserv[i] = document.getElementById('openincoserv'+i);
-		openvincoserv[i].addEventListener('click', function(){createTabincoserv(this.id);});
-	}
-	  
+      $("button.open_btn").button({
+        icons: {
+          primary: "ui-icon-folder-open"
+        },
+        label: "Open"
+      });
+
+      $("button.open_ic_btn").button({
+        icons: {
+          primary: "ui-icon-person"
+        },
+        label: "Open Incognito"
+      });
+
+      $("button.private_type_btn").button({
+        icons: {
+          primary: "ui-icon-locked"
+        },
+        label: "Private"
+      });
+        
+      $("button.public_type_btn").button({
+        icons: {
+          primary: "ui-icon-unlocked"
+        },
+        label: "Public"
+      });
+      
+      $("button.sess_type_btn").bind("click", function(){
+        if($(this).hasClass("private_type_btn"))
+        {
+          console.log("Inside private");
+          $(this).toggleClass("private_type_btn public_type_btn");
+          $(this).button( "option", "icons", { primary: "ui-icon-unlocked"} );
+          $(this).button( "option", "label", "Public" );
+        }
+
+        else if($(this).hasClass("public_type_btn"))
+        {
+          console.log("Inside public!!!");
+          $(this).toggleClass("public_type_btn private_type_btn");
+          $(this).button( "option", "icons", { primary: "ui-icon-locked"} );
+          $(this).button( "option", "label", "Private" );
+        }
+        /*
+        var class_list = $(this).attr('class').split(/\s+/);
+        var _class = class_list[0];
+        console.log(_class);
+        var tmp = _class;
+        tmp = tmp.replace("_type_btn", "");
+        if(tmp == "public") 
+          tmp = "private";
+        else 
+          tmp = "public";
+        tmp = tmp + "_type_btn";
+        console.log(_class +", "+tmp);
+
+        var _new = $(this).toggleClass(_class+' '+tmp);
+        $(_new).button( "option", "icons", { primary: "ui-icon-locked"} );
+        $(_new).button( "option", "label", "Private" );
+        */
+      });
+      
+      $(".settings_icon_btn").button({
+        icons: {
+          primary: "ui-icon-gear"
+        },
+        text: false
+      })
+        .next()
+          .button({
+            icons: {
+              primary: "ui-icon-triangle-1-s"
+            },
+            text: false
+          })          
+          .click(function() {
+            var menu = $( this ).parent().next().show().position({
+              my: "left top",
+              at: "left bottom",
+              of: this
+            });
+            $( document ).one( "click", function() {
+              menu.hide();
+            });
+            return false;
+          })
+          .parent()
+          	.buttonset()
+          		.next().hide()
+          			.menu({
+          				select: function(event, ui){
+          					alert(ui.item.text());
+          				}
+          			});
+        
+      for(var i=1;i<=numSaves;i++)
+      {
+        var openvserv = new Array();
+        var openvincoserv = new Array();
+        openvserv[i] = document.getElementById('openserv'+i);
+        openvserv[i].addEventListener('click', function(){ createTabserv(this.id);});
+        openvincoserv[i] = document.getElementById('openincoserv'+i);
+        openvincoserv[i].addEventListener('click', function(){createTabincoserv(this.id);});
+	    }
+    }
   }
-
 	xmlhttp.send();
 }
-
 
 function getUrl()
 {
