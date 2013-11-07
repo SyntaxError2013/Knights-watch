@@ -42,10 +42,30 @@ $(document).ready(function(){
     }
   });
 
+  $("#message_box").hide();
+  
+  $("#save_session_form").submit(function(e){
+    e.preventDefault();
+    var data = $("#save_session_form").serialize();
+    var url = "http://tabzhub.appspot.com/save";
+    $.post(url, data, function(res){
+      console.log(res);
+      if(res == "ok") {
+        var msg_data = "<p> Successfully stored to cloud </p>"; 
+        $("#message_box").html(msg_data);
+        $("#message_box").slideDown("slow").delay(2500).slideUp("slow");
+      }
+      else {
+        var msg_data = "<p> Error occured while storing to cloud!! Try again... </p>"; 
+        $("#message_box").html(msg_data);
+        $("#message_box").slideDown("slow");
+      }
+    });
+    return false;
+  });
 });
 
 /* SEARCH MODULE ENDS */
-
 
 function createTab()
 {
@@ -64,7 +84,7 @@ function createTabserv(i)
 	var j = i.charAt(i.length-1);
 	var urls = document.getElementById("tab"+j).value;
 	var urlstr = urls.split(',');
-	chrome.windows.create({url: urlstr});
+	 chrome.windows.create({url: urlstr});
 }
 function createTabincoserv(i)
 {
@@ -95,8 +115,7 @@ function getNum()
 	chrome.tabs.getAllInWindow(null, function (tabs) {
 			numTabs=tabs.length;
 			document.getElementById("numt").innerHTML=tabs.length;
-			});
-						
+	});
 }
 
 function getHostname(href) {
@@ -149,7 +168,7 @@ function fetchData()
       {
         var urls_arr = data[i]['urls'].split(',');
                 
-        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 19) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><p><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+i+"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br>";
+        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><p><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+i+"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br>";
         for(j=0;j<urls_arr.length;j++)
         {
            formi = formi + "<div class='tab'><div class='indicator'></div><div class='link_box'><a class='favicons' href='"+urls_arr[j]+"' target='_blank' style='float:left;'>"+ getHostname(urls_arr[j]) +"</a></div><div class='edit_box'><span class='ui-icon ui-icon-pencil'></span></div><div class='delete_box'><span class='ui-icon ui-icon-close'></span></div></div>";

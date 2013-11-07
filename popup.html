@@ -17,6 +17,12 @@
 				text-align: center;
 				margin: 5px;
 			}
+      #message_box {
+        width: 100%;
+        height: 5%;
+        padding: 5px;
+        margin: 5px;
+      }
 			.ui-autocomplete-category {
 				font-weight: bold;
 				padding: .2em .2em;
@@ -39,10 +45,13 @@
     <div id="saveForm">
       Currently Open tabs :<p id="numt"></p>
       <br>
-      <form name="tabForm" action="http://tabzhub.appspot.com/save" method="post">
+      <div id="message_box"></div>
+      <!--form name="tabForm" action="http://tabzhub.appspot.com/save" method="POST"-->
+      <form id="save_session_form" name="tabForm" method="POST">
         <label for="search">Session </label>
         <input type="text" name="name" required>
         <input type="hidden" name="urls" id="urls" />
+        <!--input type="hidden" name="full_name" id="full_name" /-->
         <label for="search">Public </label>
         <input type="checkbox" name="type" />
         <input id ="save" type="submit" value="Save" />
