@@ -3,6 +3,7 @@ numTabs=0;
 var sessions = new Array();
 var _urls = new Object();
 var _datetime = new Object();
+var _sess_ids = new Object();
 
 /* SEARCH MODULE STARTS */
 /*
@@ -168,7 +169,7 @@ function fetchData()
       {
         var urls_arr = data[i]['urls'].split(',');
                 
-        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><p><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+i+"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br>";
+        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><p><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+ i +"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul id='settings_list_"+ i +"'> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br>";
         for(j=0;j<urls_arr.length;j++)
         {
            formi = formi + "<div class='tab'><div class='indicator'></div><div class='link_box'><a class='favicons' href='"+urls_arr[j]+"' target='_blank' style='float:left;'>"+ getHostname(urls_arr[j]) +"</a></div><div class='edit_box'><span class='ui-icon ui-icon-pencil'></span></div><div class='delete_box'><span class='ui-icon ui-icon-close'></span></div></div>";
@@ -180,7 +181,8 @@ function fetchData()
         //tmp['category'] = getType(data[i]['type']);
         sessions.push(data[i]['name']);
         _urls[data[i]['name']] = data[i]['urls'];
-        _datetime[i] = data[i]['created_on']; 
+        _datetime[i] = data[i]['created_on'];
+        _sess_ids[i] = data[i]['id'];
       }
         var svtb = document.getElementById("accordion");
         svtb.innerHTML = formi;
@@ -281,16 +283,53 @@ function fetchData()
         if($(this).hasClass("private_type_btn"))
         {
           console.log("Inside private");
-          $(this).toggleClass("private_type_btn public_type_btn");
-          $(this).button( "option", "icons", { primary: "ui-icon-unlocked"} );
-          $(this).button( "option", "label", "Public" );
+          $(this).button("disable");
+          var url = "http://tabzhub.appspot.com/change_type";
+          var data = "" ;
+          $.post(url, data, function(res){
+            if(res == "ok")
+            {
+             $(this).button("enable");
+             var msg_data = "<p> Changes updated </p>"; 
+             $("#message_box").html(msg_data);
+             $("#message_box").slideDown("slow").delay(2500).slideUp("slow");
+             $(this).toggleClass("private_type_btn public_type_btn");
+             $(this).button( "option", "icons", { primary: "ui-icon-unlocked"} );
+             $(this).button( "option", "label", "Public" );
+            }
+            else
+            {
+             $(this).button("enable");
+             var msg_data = "<p> Error occured while updating! Try again... </p>"; 
+             $("#message_box").html(msg_data);
+             $("#message_box").slideDown("slow");
+            }
+          });
         }
         else if($(this).hasClass("public_type_btn"))
         {
           console.log("Inside public!!!");
-          $(this).toggleClass("public_type_btn private_type_btn");
-          $(this).button( "option", "icons", { primary: "ui-icon-locked"} );
-          $(this).button( "option", "label", "Private" );
+          $(this).button("disable");
+          var url = "http://tabzhub.appspot.com/change_type";
+          var data = "" ;
+          $.post(url, data, function(res){
+            if(res == "ok")
+            {
+             $(this).button("enable");             var msg_data = "<p> Changes updated </p>"; 
+             $("#message_box").html(msg_data);
+             $("#message_box").slideDown("slow").delay(2500).slideUp("slow");
+             $(this).toggleClass("public_type_btn private_type_btn");
+             $(this).button( "option", "icons", { primary: "ui-icon-locked"} );
+             $(this).button( "option", "label", "Private" );
+            }
+            else
+            {
+             $(this).button("enable");
+             var msg_data = "<p> Error occured while updating! Try again... </p>"; 
+             $("#message_box").html(msg_data);
+             $("#message_box").slideDown("slow");
+            }          
+          });
         }
         /*
         var class_list = $(this).attr('class').split(/\s+/);
@@ -310,7 +349,47 @@ function fetchData()
         $(_new).button( "option", "label", "Private" );
         */
       });
-      
+     
+      var setting = function(setting) {
+        console.log(setting);
+        switch(setting.text()) {
+          case "Delete": 
+             var _con = confirm("Are you sure to delete this session?");
+             if(_con == true)
+             {
+                var url = "http://tabzhub.appspot.com/session/delete"
+                var _sess_id =  $(setting).parent().attr("id");
+                console.log(_sess_id);
+                _sess_id = _sess_id.replace("settings_list_", "");
+                console.log(_sess_id);
+                var data = {
+                  id: _sess_ids[ _sess_id ]
+                }
+                //var data = tmp.serialize();
+                console.log(data);
+                $.post(url, data, function(res){
+                  if(res == "ok")
+                  {
+                    console.log(res);
+                    var msg_data = "<p> Session deleted from cloud </p>"; 
+                    $("#message_box").html(msg_data);
+                    $("#message_box").slideDown("slow").delay(2500).slideUp("slow"); 
+                  }
+                  else
+                  {
+                    console.log(res);
+                    var msg_data = "<p> Error occured!! Try again.. </p>"; 
+                    $("#message_box").html(msg_data);
+                    $("#message_box").slideDown("slow");
+                  }
+                });
+             }
+             break;
+          default:
+            console.log("Invalid option!!");
+        }
+      }
+
       $(".settings_icon_btn").button({
         icons: {
           primary: "ui-icon-gear"
@@ -340,7 +419,7 @@ function fetchData()
           		.next().hide()
           			.menu({
           				select: function(event, ui){
-          					alert(ui.item.text());
+          				  setting(ui.item);
           				}
           			});
         
