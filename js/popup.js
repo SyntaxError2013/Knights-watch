@@ -165,11 +165,12 @@ function fetchData()
       var formi="";
       var data = JSON.parse(xmlhttp.responseText);
       numSaves = Object.keys(data).length;
-      for(var i=1;i<=Object.keys(data).length;i++)
+      console.log(numSaves); 
+      for(var i=1;i<=numSaves;i++)
       {
         var urls_arr = data[i]['urls'].split(',');
                 
-        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><p><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+ i +"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul id='settings_list_"+ i +"'> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br>";
+        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div id='accordian_item_"+ i +"'><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+ i +"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul id='settings_list_"+ i +"'> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br>";
         for(j=0;j<urls_arr.length;j++)
         {
            formi = formi + "<div class='tab'><div class='indicator'></div><div class='link_box'><a class='favicons' href='"+urls_arr[j]+"' target='_blank' style='float:left;'>"+ getHostname(urls_arr[j]) +"</a></div><div class='edit_box'><span class='ui-icon ui-icon-pencil'></span></div><div class='delete_box'><span class='ui-icon ui-icon-close'></span></div></div>";
@@ -179,7 +180,7 @@ function fetchData()
         //var tmp = new Object();
         //tmp['label'] = data[i]['name'];
         //tmp['category'] = getType(data[i]['type']);
-        sessions.push(data[i]['name']);
+        sessions.push( putEllipsis(data[i]['name'], 20) );
         _urls[data[i]['name']] = data[i]['urls'];
         _datetime[i] = data[i]['created_on'];
         _sess_ids[i] = data[i]['id'];
@@ -373,7 +374,10 @@ function fetchData()
                     console.log(res);
                     var msg_data = "<p> Session deleted from cloud </p>"; 
                     $("#message_box").html(msg_data);
-                    $("#message_box").slideDown("slow").delay(2500).slideUp("slow"); 
+                    $("#message_box").slideDown("slow").delay(2500).slideUp("slow");
+                    var _accord_item_header = $("#accordian_item_"+_sess_id).prev('h3');
+                    $("#accordian_item_"+_sess_id).remove();
+                    $(_accord_item_header).remove();
                   }
                   else
                   {
