@@ -101,13 +101,17 @@ function openTabs(data)
 }
 function importOpen()
 {
-	var urls = document.getElementById("impurls").value;
+	var impid = document.getElementById("namebox").value;
+	//code to fetch url by id needed here
+	var urls;
 	var urlstr = urls.split(',');
 	chrome.windows.create({url: urlstr});
 }
 function importOpeninco()
 {
-	var urls = document.getElementById("impurls").value;
+	var impid = document.getElementById("namebox").value;
+	//code to fetch url by id needed here
+	var urls;
 	var urlstr = urls.split(',');
 	chrome.windows.create({url: urlstr, incognito: true});
 }
@@ -169,8 +173,10 @@ function fetchData()
       for(var i=1;i<=numSaves;i++)
       {
         var urls_arr = data[i]['urls'].split(',');
-                
-        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div id='accordian_item_"+ i +"'><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+ i +"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul id='settings_list_"+ i +"'> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br>";
+        var shareKey = "";
+		if(data[i]['share']==true)
+			shareKey = "<br/>Share Key : "+data[i]['id'];
+        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div id='accordian_item_"+ i +"'><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+ i +"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul id='settings_list_"+ i +"'> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br><br/>"+shareKey+"<br/>";
         for(j=0;j<urls_arr.length;j++)
         {
            formi = formi + "<div class='tab'><div class='indicator'></div><div class='link_box'><a class='favicons' href='"+urls_arr[j]+"' target='_blank' style='float:left;'>"+ getHostname(urls_arr[j]) +"</a></div><div class='edit_box'><span class='ui-icon ui-icon-pencil'></span></div><div class='delete_box'><span class='ui-icon ui-icon-close'></span></div></div>";
@@ -436,6 +442,10 @@ function fetchData()
         openvincoserv[i] = document.getElementById('openincoserv'+i);
         openvincoserv[i].addEventListener('click', function(){createTabincoserv(this.id);});
 	    }
+	  var importbutn = document.getElementById('impt');
+	  var importIncobutn = document.getElementById('imptInco');
+	  importbutn = addEventListener('click', importOpen);
+	  importIncobutn = addEventListener('click', importOpeninco);
     }
   }
 	xmlhttp.send();
@@ -468,25 +478,6 @@ function getUrl()
 		tempurl = tempurl.substring(0,tempurl.length - 1);
 		document.getElementById("urls").value=tempurl;
 		});
-}
-
-function exportTab()
-{
-	var formdiv = document.getElementById('saveForm');
-		formdiv.style.display = "none";
-	var urld = document.getElementById("urls");
-	var textar = document.getElementById('dispurls');
-	textar.value = urld.value;
-	var expdiv = document.getElementById('exportv');
-		expdiv.style.display = "block";
-}
-
-function importTab()
-{
-	var formdiv = document.getElementById('saveForm');
-		formdiv.style.display = "none";
-	var impdiv = document.getElementById('importv');
-		impdiv.style.display = "block";
 }
 
  document.addEventListener('DOMContentLoaded', function () {

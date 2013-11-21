@@ -49,21 +49,15 @@
       <!--form name="tabForm" action="http://tabzhub.appspot.com/save" method="POST"-->
       <form id="save_session_form" name="tabForm" method="POST">
         <label for="search">Session </label>
-        <input type="text" name="name" required>
+        <input type="text" name="name" id="namebox" required>
         <input type="hidden" name="urls" id="urls" />
         <!--input type="hidden" name="full_name" id="full_name" /-->
         <label for="search">Public </label>
         <input type="checkbox" name="type" />
         <input id ="save" type="submit" value="Save" />
-        <input type="button" value="Export" id="exp" /><input type="button" value="Import" id="impt" />
+        <input type="button" value="Import" id="impt" />
+		<input type="button" value="Import in Incognito" id="imptInco" />
       </form>
-    </div>
-    <div id="exportv">
-      <textarea id="dispurls" rows="10" cols="40"></textarea>
-    </div>
-    <div id="importv">
-      <textarea id="impurls" rows="10" cols="40"></textarea>
-      <input type="button" value="Open" id="openimp" /><input type="button" value="Open incognito" id="openimpinco" />
     </div>
     <hr />
     <div class="ui-widget search_box">
