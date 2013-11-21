@@ -1,6 +1,7 @@
 varUrl="";
 numTabs=0;
 var sessions = new Array();
+var sessionNames = new Array();
 var _urls = new Object();
 var _datetime = new Object();
 var _sess_ids = new Object();
@@ -52,6 +53,7 @@ $(document).ready(function(){
     $.post(url, data, function(res){
       console.log(res);
       if(res == "ok") {
+        $("#save_session_form")[0].reset();
         var msg_data = "<p> Successfully stored to cloud </p>"; 
         $("#message_box").html(msg_data);
         $("#message_box").slideDown("slow").delay(2500).slideUp("slow");
@@ -172,11 +174,16 @@ function fetchData()
       console.log(numSaves); 
       for(var i=1;i<=numSaves;i++)
       {
+
+        console.log(getType(data[i]['type']));
         var urls_arr = data[i]['urls'].split(',');
-        var shareKey = "";
+    
+    var shareKey = "";
 		if(data[i]['share']==true)
 			shareKey = "<br/>Share Key : "+data[i]['id'];
-        formi = formi + "<h3><span title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +" ("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div id='accordian_item_"+ i +"'><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><div class='session_menu'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+ i +"'>Open Incognito</button> <button class='"+ getType(data[i]['type']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul id='settings_list_"+ i +"'> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br><br/>"+shareKey+"<br/>";
+
+        formi = formi + "<h3><span id='session_namebox_"+ i +"' title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +"</span><span>("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div id='accordian_item_"+ i +"'><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><div class='session_menu' id='session_menu_"+ i +"'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+ i +"'>Open Incognito</button> <button class='"+ getType(data[i]['public']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul id='settings_list_"+ i +"'> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br><br/>"+shareKey+"<br/>";
+        
         for(j=0;j<urls_arr.length;j++)
         {
            formi = formi + "<div class='tab'><div class='indicator'></div><div class='link_box'><a class='favicons' href='"+urls_arr[j]+"' target='_blank' style='float:left;'>"+ getHostname(urls_arr[j]) +"</a></div><div class='edit_box'><span class='ui-icon ui-icon-pencil'></span></div><div class='delete_box'><span class='ui-icon ui-icon-close'></span></div></div>";
@@ -187,6 +194,7 @@ function fetchData()
         //tmp['label'] = data[i]['name'];
         //tmp['category'] = getType(data[i]['type']);
         sessions.push( putEllipsis(data[i]['name'], 20) );
+        sessionNames.push(data[i]['name']);
         _urls[data[i]['name']] = data[i]['urls'];
         _datetime[i] = data[i]['created_on'];
         _sess_ids[i] = data[i]['id'];
@@ -290,23 +298,26 @@ function fetchData()
         if($(this).hasClass("private_type_btn"))
         {
           console.log("Inside private");
+          var that = $(this);
           $(this).button("disable");
-          var url = "http://tabzhub.appspot.com/change_type";
-          var data = "" ;
+          var url = "http://tabzhub.appspot.com/session/alter/type";
+          var _sess_id = $(this).parent().attr("id");
+          _sess_id = _sess_id.replace("session_menu_", "");
+          var data = {id: _sess_ids[_sess_id]} ;
           $.post(url, data, function(res){
             if(res == "ok")
             {
-             $(this).button("enable");
+             that.button("enable");
              var msg_data = "<p> Changes updated </p>"; 
              $("#message_box").html(msg_data);
              $("#message_box").slideDown("slow").delay(2500).slideUp("slow");
-             $(this).toggleClass("private_type_btn public_type_btn");
-             $(this).button( "option", "icons", { primary: "ui-icon-unlocked"} );
-             $(this).button( "option", "label", "Public" );
+             that.toggleClass("private_type_btn public_type_btn");
+             that.button( "option", "icons", { primary: "ui-icon-unlocked"} );
+             that.button( "option", "label", "Public" );
             }
             else
             {
-             $(this).button("enable");
+             that.button("enable");
              var msg_data = "<p> Error occured while updating! Try again... </p>"; 
              $("#message_box").html(msg_data);
              $("#message_box").slideDown("slow");
@@ -316,22 +327,26 @@ function fetchData()
         else if($(this).hasClass("public_type_btn"))
         {
           console.log("Inside public!!!");
+          var that = $(this);
           $(this).button("disable");
-          var url = "http://tabzhub.appspot.com/change_type";
-          var data = "" ;
+          var url = "http://tabzhub.appspot.com/session/alter/type";
+          var _sess_id = $(this).parent().attr("id");
+          _sess_id = _sess_id.replace("session_menu_", "");
+          var data = {id: _sess_ids[_sess_id]} ;
           $.post(url, data, function(res){
             if(res == "ok")
             {
-             $(this).button("enable");             var msg_data = "<p> Changes updated </p>"; 
+             that.button("enable");
+             var msg_data = "<p> Changes updated </p>"; 
              $("#message_box").html(msg_data);
              $("#message_box").slideDown("slow").delay(2500).slideUp("slow");
-             $(this).toggleClass("public_type_btn private_type_btn");
-             $(this).button( "option", "icons", { primary: "ui-icon-locked"} );
-             $(this).button( "option", "label", "Private" );
+             that.toggleClass("public_type_btn private_type_btn");
+             that.button( "option", "icons", { primary: "ui-icon-locked"} );
+             that.button( "option", "label", "Private" );
             }
             else
             {
-             $(this).button("enable");
+             that.button("enable");
              var msg_data = "<p> Error occured while updating! Try again... </p>"; 
              $("#message_box").html(msg_data);
              $("#message_box").slideDown("slow");
@@ -360,6 +375,15 @@ function fetchData()
       var setting = function(setting) {
         console.log(setting);
         switch(setting.text()) {
+          case "Rename":
+             var _sess_id = $(setting).parent().attr("id");
+             _sess_id = _sess_id.replace("settings_list_", "");
+             var _sess_name = sessionNames[_sess_id];
+             $("#sess_timeAgo_"+_sess_id).hide();
+             console.log(_sess_name);
+             var html_data = "<input type='text' class='new_session_name' id='new_sess_name_"+ _sess_id +"' value='"+ _sess_name +"'/>";
+             $("#session_namebox_"+_sess_id).html(html_data);
+             break;
           case "Delete": 
              var _con = confirm("Are you sure to delete this session?");
              if(_con == true)
@@ -369,9 +393,8 @@ function fetchData()
                 console.log(_sess_id);
                 _sess_id = _sess_id.replace("settings_list_", "");
                 console.log(_sess_id);
-                var data = {
-                  id: _sess_ids[ _sess_id ]
-                }
+                var data = {id: _sess_ids[ _sess_id ]}
+                /* Need to add delete functionality here. */
                 //var data = tmp.serialize();
                 console.log(data);
                 $.post(url, data, function(res){
