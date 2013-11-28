@@ -179,7 +179,7 @@ function fetchData()
         var urls_arr = data[i]['urls'].split(',');
     
     var shareKey = "";
-		if(data[i]['share']==true)
+		if(data[i]['share']==true || data[i]['public']==true)
 			shareKey = "<br/>Share Key : "+data[i]['id'];
 
         formi = formi + "<h3><span id='session_namebox_"+ i +"' title='"+ data[i]['name'] +"'>" + putEllipsis(data[i]['name'], 15) +"</span><span>("+ urls_arr.length  +") </span> <span class='sess_timeAgo' id='sess_timeAgo_"+ i +"' style='float:right; font-size:10px;margin-top:5px;'>"+ getTimeAgo(data[i]['created_on']) +"</span></h3> <div id='accordian_item_"+ i +"'><p><input type='hidden' id='tab"+ i +"' value='"+ data[i]['urls'] +"' /><br /><div class='session_menu' id='session_menu_"+ i +"'><button name='Openserv' class='open_btn' id='openserv"+i+"'>Open</button> <button class='open_ic_btn' name='Openincoserv' id='openincoserv"+ i +"'>Open Incognito</button> <button class='"+ getType(data[i]['public']) +"_type_btn sess_type_btn'>Type</button> <button class='settings_icon_btn'>Settings_icon</button><button class='settings_menu_btn'>Settings_menu</button> </div><ul id='settings_list_"+ i +"'> <li><a href='#'><span class='ui-icon ui-icon-pencil'></span>Edit</a></li> <li><a href='#'><span class='ui-icon ui-icon-trash'></span>Delete</a></li> <li><a href='#'><span class='ui-icon ui-icon-tag'></span>Rename</a></li> <li><a href='#'><span class='ui-icon ui-icon-mail-closed'></span>Hide Session</a></li> <li><a href='#'><span class='ui-icon ui-icon-suitcase'></span>Hide Tabs</a></li> </ul> <br><br/>"+shareKey+"<br/>";
