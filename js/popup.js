@@ -101,22 +101,49 @@ function openTabs(data)
 	var urlstr = data.split(',');
 	chrome.windows.create({url: urlstr});
 }
+
 function importOpen()
 {
 	var impid = document.getElementById("namebox").value;
+	var params = "id="+impid;
 	//code to fetch url by id needed here
-	var urls;
-	var urlstr = urls.split(',');
-	chrome.windows.create({url: urlstr});
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://tabzhub.appspot.com/fetchbyid", true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.onreadystatechange=function()
+	{
+		if (xhr.readyState==4 && xhr.ststus==200)
+    {
+		var data = JSON.parse(xhr.responseText);
+		var urls = data['urls'];
+		var urlstr = urls.split(',');
+		chrome.windows.create({url: urlstr});
+	}
+	}
+	xhr.send(params);
 }
+
 function importOpeninco()
 {
 	var impid = document.getElementById("namebox").value;
+	var params = "id="+impid;
 	//code to fetch url by id needed here
-	var urls;
-	var urlstr = urls.split(',');
-	chrome.windows.create({url: urlstr, incognito: true});
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', "http://tabzhub.appspot.com/fetchbyid", true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhr.onreadystatechange=function()
+	{
+		if (xhr.readyState==4 && xhr.status==200)
+    {
+		var data = JSON.parse(xhr.responseText);
+		var urls = data['urls'];
+		var urlstr = urls.split(',');
+		chrome.windows.create({url: urlstr, incognito: true});
+	}
+	}
+	xhr.send(params);
 }
+
 function getNum() 
 {
 	chrome.tabs.getAllInWindow(null, function (tabs) {
