@@ -73,6 +73,7 @@ p {
   display:none;
 }
 div.tab {
+  clear:both;
 	height: 25px;
 	padding: 5px;
 	padding-left: 20px;
@@ -116,8 +117,24 @@ div.delete_box {
 div.session_menu {
   height: 40px;
   margin: 0 0 0 12;
-  float: right;
+  float: left;
 }     
+
+div.share_box {
+  height: 25px;
+  padding: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-bottom: 10px;
+  margin-left: 30px;
+  float: left;
+  background-color: #F0F0F0;
+}
+
+span.share_key {
+  font-size: 15px;
+}
+
 
 /*
 input[type=text] {
