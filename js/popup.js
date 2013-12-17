@@ -198,6 +198,30 @@ function clone(obj) {
     return copy;
 }
 
+/* Popup a chrome notification */
+function notify( message ) {
+  var havePermission = webkitNotifications.checkPermission();
+  if (havePermission == 0) {
+    // 0 is PERMISSION_ALLOWED
+    var notification = webkitNotifications.createNotification(
+      'http://i.stack.imgur.com/dmHl0.png',
+      'tabZhub notification!',
+      message
+    );
+    
+    /*
+    notification.onclick = function () {
+      window.open("http://stackoverflow.com/a/13328397/1269037");
+      notification.close();
+    }
+    */
+
+    notification.show();
+  } else {
+      window.webkitNotifications.requestPermission();
+  }
+}  
+
 function compileSessionData(data, start_no)
 {
         var formi="";
@@ -261,18 +285,44 @@ function compileSessionData(data, start_no)
             //$("button.open_btn").button("refresh");
           }
         
-      /****************************************************************************************/
+        /****************************************************************************************/
 
-       /* NEED TO REVIEW/REPAIR THE BELOW CODE TO INCREASE THE EFFIIENCY */
-       $(".favicons").each(function(){
+        /* NEED TO REVIEW/REPAIR THE BELOW CODE TO INCREASE THE EFFICIENCY */
+ 
+        $("#bottom_container").css({
+          background: "url('../images/bgrnd/mbpanel.jpg')"
+        });
+        
+        var icons = {  
+           header: "ui-icon-circle-arrow-e",
+           activeHeader: "ui-icon-circle-arrow-s"
+        };
+
+        $("#accordion").accordion({ // Should be here after those 2 functions.
+          heightStyle: "content",
+          collapsible: true,
+          active: false,
+          icons: icons,
+          activate: function(event, ui){
+           console.log("Session header clicked in accordion.");
+          }
+        });
+
+        $("#moreSessions_btn").show();
+
+        $("#moreSessions_btn").click(function(){
+            compileMoreSessions();
+        });
+
+
+        $(".favicons").each(function(){
           var href = $(this).attr('href');
           $(this).css({
             background: "url(http://www.google.com/s2/u/0/favicons?domain=" + getHostname(href) + 
                     ") left center no-repeat",
                     "padding-left": "20px"
           });
-         });
-        /***********/
+        });
         
         $(this).children(".link_box").css({'background-color':'white'});
          $(".indicator").each(function(){
@@ -301,15 +351,12 @@ function compileSessionData(data, start_no)
           });
 
         $("div.edit_box").on("click", function(){
-         alert("Tab edit called...");  
+         alert("yoyoy");
+         notify("Tab edit called...");
         });
 
         $("div.delete_box").on("click", function(){
-         alert("Tab delete called...");  
-        });
-
-        $("#bottom_container").css({
-          background: "url('../images/bgrnd/mbpanel.jpg')"
+         notify("Tab delete called...");
         });
 
         /*
@@ -566,6 +613,7 @@ function fetchData()
 
         /*  ACCORDION INITIALIZATION  */
         
+        /*
          var icons = {  
            header: "ui-icon-circle-arrow-e",
            activeHeader: "ui-icon-circle-arrow-s"
@@ -580,7 +628,8 @@ function fetchData()
            console.log("Session header clicked in accordion.");
           }
          });
-        
+        */
+
          /*
          $(".favicons").each(function(){
           var href = $(this).attr('href');
@@ -592,11 +641,13 @@ function fetchData()
          });
          */
   
+         /*
          $("#moreSessions_btn").show();
 
          $("#moreSessions_btn").click(function(){
             compileMoreSessions();
          });
+         /*
     
          /*
          $(this).children(".link_box").css({'background-color':'white'});

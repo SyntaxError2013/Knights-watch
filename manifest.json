@@ -6,6 +6,7 @@
 
  "permissions": [
     "tabs",
+    "notifications",
     "*://tabzhub.appspot.com/*"
   ],
 
@@ -15,4 +16,5 @@
     "default_name": "tabZhub",
     "icons": ["icon.png"]
   }
+
 }
