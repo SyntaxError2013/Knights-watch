@@ -113,6 +113,7 @@ function importOpen()
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://tabzhub.appspot.com/fetchbyid", true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	var urlstr = "";
 	xhr.onreadystatechange=function()
 	{
 		if (xhr.readyState==4 && xhr.ststus==200)
@@ -120,10 +121,11 @@ function importOpen()
 		var data = JSON.parse(xhr.responseText);
 		var urls = data['urls'];
 		var urlstr = urls.split(',');
-		chrome.windows.create({url: urlstr});
+		
 	}
 	}
 	xhr.send(params);
+	chrome.windows.create({url: urlstr});
 }
 
 function importOpeninco()
@@ -134,6 +136,7 @@ function importOpeninco()
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', "http://tabzhub.appspot.com/fetchbyid", true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	var urlstr = "";
 	xhr.onreadystatechange=function()
 	{
 		if (xhr.readyState==4 && xhr.status==200)
@@ -141,10 +144,11 @@ function importOpeninco()
 		var data = JSON.parse(xhr.responseText);
 		var urls = data['urls'];
 		var urlstr = urls.split(',');
-		chrome.windows.create({url: urlstr, incognito: true});
+		
 	}
 	}
 	xhr.send(params);
+	chrome.windows.create({url: urlstr, incognito: true});
 }
 
 function getNum() 
@@ -571,10 +575,7 @@ function compileSessionData(data, start_no)
           openvincoserv[i].addEventListener('click', function(){createTabincoserv(this.id);});
         }
         
-        var importbutn = document.getElementById('impt');
-        var importIncobutn = document.getElementById('imptInco');
-        importbutn = addEventListener('click', importOpen);
-        importIncobutn = addEventListener('click', importOpeninco);
+
 }
 
 function compileMoreSessions()
@@ -944,6 +945,10 @@ function getUrl()
  document.addEventListener('DOMContentLoaded', function () {
 	getUrl();
 	fetchData();
+	var importbutn = document.getElementById('impt');
+    var importIncobutn = document.getElementById('imptInco');
+    importbutn = addEventListener('click', importOpen);
+    importIncobutn = addEventListener('click', importOpeninco);
 
   
 
